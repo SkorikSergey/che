@@ -63,7 +63,7 @@ public class GitUserProfileProvisioner implements ConfigurationProvisioner<Kuber
   @Override
   public void provision(KubernetesEnvironment k8sEnv, RuntimeIdentity identity)
       throws InfrastructureException {
-    getPreferenceValueOrNull(PREFERENCES_KEY_FILTER)
+    getPreferenceValue(PREFERENCES_KEY_FILTER)
         .ifPresent(
             preferenceJsonValue -> {
               Map<String, String> theiaPreferences = getMapFromJsonObject(preferenceJsonValue);
@@ -87,13 +87,13 @@ public class GitUserProfileProvisioner implements ConfigurationProvisioner<Kuber
     return new Gson().fromJson(json, stringMapType);
   }
 
-  private Optional<String> getPreferenceValueOrNull(String keyFilter)
+  private Optional<String> getPreferenceValue(String keyFilter)
       throws InfrastructureException {
     try {
       String userId = EnvironmentContext.getCurrent().getSubject().getUserId();
       Map<String, String> preferencesMap = preferenceManager.find(userId, keyFilter);
 
-      return ofNullable(preferencesMap.get(PREFERENCES_KEY_FILTER));
+      return ofNullable(preferencesMap.get(keyFilter));
     } catch (ServerException e) {
       throw new InfrastructureException(e);
     }
