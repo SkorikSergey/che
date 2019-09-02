@@ -111,7 +111,8 @@ public class KubernetesEnvironmentProvisionerTest {
             imagePullSecretProvisioner,
             proxySettingsProvisioner,
             serviceAccountProvisioner,
-            certificateProvisioner);
+            certificateProvisioner,
+            gitUserProfileProvisioner);
   }
 
   @Test
