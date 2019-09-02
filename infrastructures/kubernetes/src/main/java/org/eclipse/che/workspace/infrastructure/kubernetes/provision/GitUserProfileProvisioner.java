@@ -87,8 +87,7 @@ public class GitUserProfileProvisioner implements ConfigurationProvisioner<Kuber
     return new Gson().fromJson(json, stringMapType);
   }
 
-  private Optional<String> getPreferenceValue(String keyFilter)
-      throws InfrastructureException {
+  private Optional<String> getPreferenceValue(String keyFilter) throws InfrastructureException {
     try {
       String userId = EnvironmentContext.getCurrent().getSubject().getUserId();
       Map<String, String> preferencesMap = preferenceManager.find(userId, keyFilter);
