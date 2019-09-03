@@ -1,4 +1,4 @@
-<div id="header" align="center">
+<div id="header" align="center"> 
 
 [![Eclipse Che - Eclipse Next-Generation IDE](https://raw.githubusercontent.com/eclipse/che/assets/eclipseche.png)](
 https://www.eclipse.org/che/)
