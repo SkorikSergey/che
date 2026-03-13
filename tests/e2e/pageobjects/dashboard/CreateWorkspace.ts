@@ -140,10 +140,31 @@ export class CreateWorkspace {
 		return await element.isSelected();
 	}
 
+	async waitForCheckboxState(
+		expectedState: boolean,
+		timeout: number = TIMEOUT_CONSTANTS.TS_COMMON_DASHBOARD_WAIT_TIMEOUT
+	): Promise<void> {
+		Logger.debug(`waiting for checkbox to be ${expectedState ? 'checked' : 'unchecked'}`);
+
+		const polling: number = 500;
+		const attempts: number = Math.ceil(timeout / polling);
+
+		for (let i: number = 0; i < attempts; i++) {
+			const currentState: boolean = await this.isCreateNewWorkspaceCheckboxChecked();
+			if (currentState === expectedState) {
+				Logger.debug(`Checkbox reached expected state: ${expectedState}`);
+				return;
+			}
+			await this.driverHelper.wait(polling);
+		}
+
+		throw new Error(`Checkbox did not reach expected state ${expectedState} within ${timeout}ms`);
+	}
+
 	async clickOnCreateNewWorkspaceCheckbox(timeout: number = TIMEOUT_CONSTANTS.TS_SELENIUM_WAIT_FOR_URL): Promise<void> {
 		Logger.debug();
 
-		await this.driverHelper.waitAndClick(CreateWorkspace.CREATE_NEW_WORKPACE_CHECKBOX, timeout);
+		await this.driverHelper.scrollToAndClick(CreateWorkspace.CREATE_NEW_WORKPACE_CHECKBOX, timeout);
 	}
 
 	async setCreateNewWorkspaceCheckbox(
@@ -163,8 +184,7 @@ export class CreateWorkspace {
 
 		// click to change state
 		Logger.debug(`Checkbox is ${isCurrentlyChecked ? 'set' : 'unset'}, ${checked ? 'setting' : 'unsetting'} it now`);
-		await this.driverHelper.waitAndClick(CreateWorkspace.CREATE_NEW_WORKPACE_CHECKBOX, timeout);
-		await this.driverHelper.wait(1000);
+		await this.driverHelper.scrollToAndClick(CreateWorkspace.CREATE_NEW_WORKPACE_CHECKBOX, timeout);
 	}
 
 	private getEditorsDropdownListLocator(sampleName: string): By {
