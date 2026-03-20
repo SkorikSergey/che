@@ -153,6 +153,7 @@ export class CreateWorkspace {
 			const currentState: boolean = await this.isCreateNewWorkspaceCheckboxChecked();
 			if (currentState === expectedState) {
 				Logger.debug(`Checkbox reached expected state: ${expectedState}`);
+				await this.driverHelper.wait(timeout);
 				return;
 			}
 			await this.driverHelper.wait(polling);
