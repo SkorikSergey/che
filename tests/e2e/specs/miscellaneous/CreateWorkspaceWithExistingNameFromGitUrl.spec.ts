@@ -22,7 +22,7 @@ import { FACTORY_TEST_CONSTANTS } from '../../constants/FACTORY_TEST_CONSTANTS';
 import { CreateWorkspace } from '../../pageobjects/dashboard/CreateWorkspace';
 import { TIMEOUT_CONSTANTS } from '../../constants/TIMEOUT_CONSTANTS';
 
-const projectName: string = FACTORY_TEST_CONSTANTS.TS_SELENIUM_PROJECT_NAME || 'public-repo-check';
+const projectName: string = 'public-repo-check';
 
 suite(`"Start workspace with existed workspace name" test ${BASE_TEST_CONSTANTS.TEST_ENVIRONMENT}`, function (): void {
 	const workspaceHandlingTests: WorkspaceHandlingTests = e2eContainer.get(CLASSES.WorkspaceHandlingTests);
@@ -35,10 +35,7 @@ suite(`"Start workspace with existed workspace name" test ${BASE_TEST_CONSTANTS.
 	let projectSection: ViewSection;
 	let firstWorkspaceName: string;
 	let secondWorkspaceName: string;
-	const factoryUrl: string = BASE_TEST_CONSTANTS.IS_CLUSTER_DISCONNECTED()
-		? FACTORY_TEST_CONSTANTS.TS_SELENIUM_AIRGAP_FACTORY_GIT_REPO_URL ||
-			'https://gh.crw-qe.com/test-automation-only/python-hello-world/tree/test'
-		: FACTORY_TEST_CONSTANTS.TS_SELENIUM_FACTORY_GIT_REPO_URL || 'https://github.com/SkorikSergey/public-repo-check';
+	const factoryUrl: string = 'https://github.com/SkorikSergey/public-repo-check';
 
 	suiteSetup('Login', async function (): Promise<void> {
 		await loginTests.loginIntoChe();
