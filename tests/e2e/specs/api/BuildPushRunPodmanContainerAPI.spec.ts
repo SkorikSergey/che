@@ -23,6 +23,7 @@ import { Dashboard } from '../../pageobjects/dashboard/Dashboard';
 import { ShellExecutor } from '../../utils/ShellExecutor';
 import { FACTORY_TEST_CONSTANTS } from '../../constants/FACTORY_TEST_CONSTANTS';
 import { ViewSection } from 'monaco-page-objects';
+import { DriverHelper } from '../../utils/DriverHelper';
 
 suite(`Test podman build container functionality ${BASE_TEST_CONSTANTS.TEST_ENVIRONMENT}`, function (): void {
 	const projectAndFileTests: ProjectAndFileTests = e2eContainer.get(CLASSES.ProjectAndFileTests);
@@ -32,6 +33,8 @@ suite(`Test podman build container functionality ${BASE_TEST_CONSTANTS.TEST_ENVI
 	const testWorkspaceUtil: ITestWorkspaceUtil = e2eContainer.get(TYPES.WorkspaceUtil);
 	const dashboard: Dashboard = e2eContainer.get(CLASSES.Dashboard);
 	const shellExecutor: ShellExecutor = e2eContainer.get(CLASSES.ShellExecutor);
+	const driverHelper: DriverHelper = e2eContainer.get(CLASSES.DriverHelper);
+
 
 	let kubernetesCommandLineToolsExecutor: KubernetesCommandLineToolsExecutor;
 	let workspaceName: string = '';
@@ -134,6 +137,7 @@ oc logs test-hello-pod
 			await projectAndFileTests.getProjectTreeItem(projectSection, 'Dockerfile.x86_64'),
 			'Dockerfile not found in the project tree'
 		).not.undefined;
+		await driverHelper.wait(15000);
 	});
 
 	test('Build and push container image from workspace', function (): void {
