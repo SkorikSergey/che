@@ -143,7 +143,6 @@ export class ProjectAndFileTests {
 		Logger.debug();
 		await this.performTrustAuthorDialog();
 		await this.performTrustPublisherDialog();
-		await this.performTrustAuthorDialog();
 	}
 
 	/**
