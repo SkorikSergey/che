@@ -117,9 +117,10 @@ suite(`Test image build with persistUserHome enabled (kubedock and podman) ${BAS
 		await projectAndFileTests.waitWorkspaceReadinessForCheCodeEditor();
 	});
 
-	test('Check the project files were imported', async function (): Promise<void> {
+	test('Check the project files were imported and accept the project as a trusted one', async function (): Promise<void> {
 		const projectSection: ViewSection = await projectAndFileTests.getProjectViewSession();
 		expect(await projectAndFileTests.getProjectTreeItem(projectSection, 'Dockerfile.ppc64le'), 'Files not imported').not.undefined;
+		await projectAndFileTests.performTrustDialogs();
 	});
 
 	test('Create and check container runs using kubedock and podman with persistUserHome', function (): void {

@@ -128,12 +128,13 @@ oc logs test-hello-pod
 		await projectAndFileTests.waitWorkspaceReadinessForCheCodeEditor();
 	});
 
-	test('Check the project files were imported', async function (): Promise<void> {
+	test('Check the project files were imported and accept the project as a trusted one', async function (): Promise<void> {
 		const projectSection: ViewSection = await projectAndFileTests.getProjectViewSession();
 		expect(
 			await projectAndFileTests.getProjectTreeItem(projectSection, 'Dockerfile.x86_64'),
 			'Dockerfile not found in the project tree'
 		).not.undefined;
+		await projectAndFileTests.performTrustDialogs();
 	});
 
 	test('Build and push container image from workspace', function (): void {
