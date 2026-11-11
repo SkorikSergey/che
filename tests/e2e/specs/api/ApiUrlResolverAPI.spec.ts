@@ -7,12 +7,13 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  **********************************************************************/
+
 import { AxiosResponse } from 'axios';
 import { expect } from 'chai';
 import { CheApiRequestHandler } from '../../utils/request-handlers/CheApiRequestHandler';
 import { ApiUrlResolver } from '../../utils/workspace/ApiUrlResolver';
 
-suite('Workspace API URL resolver', function (): void {
+suite('API URL resolver test', function (): void {
 	type DevWorkspaceItem = { metadata: { name: string; labels?: Record<string, string> } };
 	const workspacesUrl: string = 'dashboard/api/namespace/user/devworkspaces';
 
@@ -47,17 +48,17 @@ suite('Workspace API URL resolver', function (): void {
 		expect(actualError?.message).to.contain(expectedMessage);
 	}
 
-	test('resolves an exact DevWorkspace name directly', async function (): Promise<void> {
+	test('Resolve an exact DevWorkspace name directly', async function (): Promise<void> {
 		const url: string = await createResolver([], true).getWorkspaceApiUrl('workspace');
 		expect(url).to.equal(`${workspacesUrl}/workspace`);
 	});
 
-	test('resolves an exact DevWorkspace name from the list after a failed direct request', async function (): Promise<void> {
+	test('Resolve an exact DevWorkspace name from the list after a failed direct request', async function (): Promise<void> {
 		const url: string = await createResolver([{ metadata: { name: 'workspace' } }]).getWorkspaceApiUrl('workspace');
 		expect(url).to.equal(`${workspacesUrl}/workspace`);
 	});
 
-	test('resolves a restored DevWorkspace with a matching display-name label', async function (): Promise<void> {
+	test('Resolve a restored DevWorkspace with a matching display-name label', async function (): Promise<void> {
 		const workspaces: DevWorkspaceItem[] = [
 			{ metadata: { name: 'workspace-4fnq', labels: { 'kubernetes.io/metadata.name': 'workspace' } } }
 		];
@@ -65,21 +66,21 @@ suite('Workspace API URL resolver', function (): void {
 		expect(url).to.equal(`${workspacesUrl}/workspace-4fnq`);
 	});
 
-	test('does not resolve a different workspace with a similar name', async function (): Promise<void> {
+	test('Check that a different workspace with a similar name is not resolved', async function (): Promise<void> {
 		await expectResolutionError(
 			[{ metadata: { name: 'workspace-2', labels: { 'kubernetes.io/metadata.name': 'workspace-2' } } }],
 			'Workspace not found: workspace (tried exact match and display-name search)'
 		);
 	});
 
-	test('does not resolve a suffixed workspace without a display-name label', async function (): Promise<void> {
+	test('Check that a suffixed workspace without a display-name label is not resolved', async function (): Promise<void> {
 		await expectResolutionError(
 			[{ metadata: { name: 'workspace-4fnq' } }],
 			'Workspace not found: workspace (tried exact match and display-name search)'
 		);
 	});
 
-	test('rejects multiple restored DevWorkspaces with the same display name', async function (): Promise<void> {
+	test('Reject multiple restored DevWorkspaces with the same display name', async function (): Promise<void> {
 		await expectResolutionError(
 			[
 				{ metadata: { name: 'workspace-4fnq', labels: { 'kubernetes.io/metadata.name': 'workspace' } } },
